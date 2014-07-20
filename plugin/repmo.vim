@@ -175,20 +175,26 @@ func! <sid>MapRepeatMotion(vmode, key, revkey) "{{{
 	call RepmoMap(s:lastkey, s:lastrevkey)
     endif
 
-    " We still want to do the mapping, even if no count was given
+    " We still want to create the mapping, even if no count was given
     if cnt == 0
 	let cnt = 1
+	" Don't prefix the mapping with 1.  Otherwise `2;` will perform 21 x key!
+	let mapcnt = ""
+    else
+	" When repmo is used, re-use the count that was given this time.
+	" Hope the user doesn't try to supply a count!
+	let mapcnt = "".cnt
     endif
     if cnt > 0
 	" map ";" and ","
 	let hasrepmo = 0
 	if exists("g:repmo_key") && g:repmo_key != ''
-	    exec "noremap <special>" g:repmo_key cnt.a:key
+	    exec "noremap <special>" g:repmo_key mapcnt.a:key
 	    exec "sunmap <special>" g:repmo_key
 	    let hasrepmo = 1
 	endif
 	if exists("g:repmo_revkey") && g:repmo_revkey != ''
-	    exec "noremap <special>" g:repmo_revkey cnt.a:revkey
+	    exec "noremap <special>" g:repmo_revkey mapcnt.a:revkey
 	    exec "sunmap <special>" g:repmo_revkey
 	    let hasrepmo = 1
 	endif
