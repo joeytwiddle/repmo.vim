@@ -175,6 +175,10 @@ func! <sid>MapRepeatMotion(vmode, key, revkey) "{{{
 	call RepmoMap(s:lastkey, s:lastrevkey)
     endif
 
+    " We still want to do the mapping, even if no count was given
+    if cnt == 0
+	let cnt = 1
+    endif
     if cnt > 0
 	" map ";" and ","
 	let hasrepmo = 0
